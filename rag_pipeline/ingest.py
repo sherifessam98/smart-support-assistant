@@ -32,7 +32,7 @@ def ingest_document(
     os.makedirs(persist_path,exist_ok=True)
     vector_store.save_local(persist_path)
     with open(os.path.join(persist_path,"embeddings.pkl"),"wb") as f:
-        pickle.dump(embeddings,f)
+        pickle.dump(embeddings, f)
     print("✅ Ingestion complete.")
 
 def load_vector_store(persist_path: str = PERSIST_PATH) -> FAISS:

@@ -38,8 +38,7 @@ if uploaded_file:
     query = st.text_input("Ask a question about your document:")
     if query:
         with st.spinner("Generating Answer"):
-            # Loading vectore store
-            vector_store = load_vector_store(persist_path=FAISS_DIR)
+            # Loading vector store
             answer, sources = ask_question(query,
                                            vectorestore_dir=FAISS_DIR)
         st.markdown("### ✅ Answer")

@@ -21,7 +21,7 @@ def ask_question(query:str,
         search_type="similarity",
         search_kwargs={"k": k}
     )
-    # Initialize GPT
+
     # set up a HuggingFace text-generation pipeline
     pipe = pipeline(
         "text2text-generation",
