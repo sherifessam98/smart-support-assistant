@@ -1,27 +1,33 @@
 from langchain.chains import RetreivalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.vectorstores import FAISS
+from typing import List, Tuple
+from rag_pipeline.ingest import load_vector_store
 import pickle
 
 
-#Loading the same embedding model used for saving the FAISS index
-with open("embedding.pkl","rb") as f:
-    embeddings = pickle.load(f)
+def ask_question(query:str,
+                 vectorestore_dir:str = "faiss_index",
+                 k:int = 3,
+                 model_name: str = "gpt-3.5-turbo",
+                 temperature: float = 0.0
+                 ) -> Tuple[str, List]:
+    # Load FAISS index
+    vector_store = load_vector_store(persist_path=vectorestore_dir)
 
-vector_store = FAISS.loadl_local("faiss_index",embeddings)
-#Creating a retriever for which is used for searching for relevant chunks
-retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k":3})
-#Setting up the LLM
-llm = ChatOpenAI(model_name="gpt-3.5-turbo",temperature = 0)
+    # Set up retriever
+    retriever = vector_store.as_retriever(
+        search_type="similarity",
+        search_kwargs={"k": k}
+    )
+    # Initialize GPT
+    llm = ChatOpenAI(model_name=model_name, temperature=temperature)
 
-qa_chain = RetreivalQA.from_chain_type(
-    llm=llm,
-    chain_type = "stuff",
-    retriever = retriever,
-    return_source_documents = True
-)
-
-def ask_question(query:str):
-    response = qa_chain(query)
-    return response["result"],response["source_documents"]
-
+    qa_chain = RetreivalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=retriever,
+        return_source_documents=True
+    )
+    result = qa_chain(query)
+    return result["result"], result["source_documents"]

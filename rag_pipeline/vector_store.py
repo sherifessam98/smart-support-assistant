@@ -1,3 +1,5 @@
+# helper
+
 from langchain.embeddings import OpenAIEmbeddings #for turning text into vectors
 from langchain.vectorstores import FAISS #the  vector database which will be used
 import os

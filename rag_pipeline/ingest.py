@@ -4,9 +4,8 @@ import pickle
 from typing import List
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-
 from rag_pipeline.document_loader import load_text_file, chunk_text
-from rag_pipeline.rag_chain import vector_store, embeddings
+
 
 PERSIST_PATH = "faiss_index"
 
