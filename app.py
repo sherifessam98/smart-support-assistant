@@ -13,7 +13,6 @@ if uploaded_file is not None:
     file_content = uploaded_file.read().decode("utf-8")
     st.success("File Loaded")
     chunks = chunk_text(file_content)
-    print(chunks,"sherif")
     st.subheader(f"Generated {len(chunks)} Chunks")
     #Looping through each chunk and displaying it in the UI
     for i,chunk in enumerate(chunks):

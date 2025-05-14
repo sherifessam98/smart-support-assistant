@@ -13,7 +13,7 @@ def create_vector_store(chunks, presist_path="faiss_index"):
     embeddings = OpenAIEmbeddings()
     # a vector store from the documents chunks and their embeddings
     vector_store = FAISS.from_documents(chunks,embeddings)
-
+    # saving the faiss index
     vector_store.save_local(presist_path)
     #Saving the embedding object
     with open(os.path.join(presist_path,"embeddings.pkl"),"wb") as f:
@@ -25,7 +25,7 @@ def create_vector_store(chunks, presist_path="faiss_index"):
 
 def load_vector_store(presist_path = "faiss_index"):
     """
-    load the FAISS vectore store for later use
+    load the FAISS vector store for later use
 
     """
     #loading the saved OpenAI embedding model
