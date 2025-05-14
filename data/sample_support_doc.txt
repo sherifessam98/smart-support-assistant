@@ -1,0 +1,20 @@
+Welcome to AcmeCorp SmartWidget Support Manual
+
+Section 1: Getting Started
+To set up your SmartWidget, connect the device to a power source using the provided USB-C cable. Press and hold the power button for 3 seconds to turn it on. A blinking blue light means the device is in pairing mode.
+
+Section 2: Connecting to Wi-Fi
+Open the AcmeCorp mobile app. Select “Add New Device” and follow the on-screen instructions. Make sure your phone is connected to the same Wi-Fi network that you want the SmartWidget to use.
+
+Section 3: Troubleshooting Common Issues
+- Device not turning on: Ensure the battery is charged.
+- Not connecting to Wi-Fi: Restart your router and make sure the SmartWidget is within 10 meters of it.
+- Red blinking light: This means a firmware update failed. Reboot the device and try again.
+
+Section 4: Resetting the Device
+To reset the SmartWidget, press the reset button (small pinhole) using a paperclip. Hold it for 10 seconds until the LED flashes red three times.
+
+Section 5: Contact Support
+If you're still experiencing issues, contact AcmeCorp Support at support@acmecorp.com or call 1-800-555-0199.
+
+Thank you for choosing AcmeCorp!
