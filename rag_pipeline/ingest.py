@@ -2,7 +2,7 @@ import os
 import pickle
 
 from typing import List
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from rag_pipeline.document_loader import load_text_file, chunk_text
 
@@ -26,10 +26,9 @@ def ingest_document(
 
     text = load_text_file(file_path)
     chunks: List[str] = chunk_text(text, chunk_size = chunk_size, overlap=chunk_overlap)
-    embeddings = OpenAIEmbeddings
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     #build FAISS INDEX
-    vector_store = FAISS.from_texts(chunks, embeddings=embeddings)
-    #
+    vector_store = FAISS.from_texts(chunks, embedding=embeddings)
     os.makedirs(persist_path,exist_ok=True)
     vector_store.save_local(persist_path)
     with open(os.path.join(persist_path,"embeddings.pkl"),"wb") as f:
@@ -45,7 +44,7 @@ def load_vector_store(persist_path: str = PERSIST_PATH) -> FAISS:
     """
     with open(os.path.join(persist_path,"embeddings.pkl"),"rb") as f:
         embeddings = pickle.load(f)
-    vector_store = FAISS.load_local(persist_path,embeddings)
+    vector_store = FAISS.load_local(persist_path,embeddings,allow_dangerous_deserialization=True)
     return vector_store
 
 

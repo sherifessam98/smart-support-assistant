@@ -1,7 +1,8 @@
-from langchain.chains import RetreivalQA
-from langchain.chat_models import ChatOpenAI
-from langchain.vectorstores import FAISS
+from langchain.chains import RetrievalQA
+from langchain.llms import HuggingFacePipeline
 from typing import List, Tuple
+import torch
+from transformers import pipeline
 from rag_pipeline.ingest import load_vector_store
 import pickle
 
@@ -9,7 +10,7 @@ import pickle
 def ask_question(query:str,
                  vectorestore_dir:str = "faiss_index",
                  k:int = 3,
-                 model_name: str = "gpt-3.5-turbo",
+                 model_name: str = "google/flan-t5-base",
                  temperature: float = 0.0
                  ) -> Tuple[str, List]:
     # Load FAISS index
@@ -21,9 +22,16 @@ def ask_question(query:str,
         search_kwargs={"k": k}
     )
     # Initialize GPT
-    llm = ChatOpenAI(model_name=model_name, temperature=temperature)
+    # set up a HuggingFace text-generation pipeline
+    pipe = pipeline(
+        "text2text-generation",
+        model=model_name,
+        device=0 if torch.cuda.is_available() else -1,
+        max_length=512
+    )
+    llm = HuggingFacePipeline(pipeline=pipe)
 
-    qa_chain = RetreivalQA.from_chain_type(
+    qa_chain = RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
         retriever=retriever,
